@@ -5,3 +5,4 @@ express application
 - goto express folder
 - hit `npm install`
 - hit `npm run dev`
+- Now goto localhost:4000
