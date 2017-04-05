@@ -1,17 +1,24 @@
 var express    = require('express');
 var app        = express();
+var connection = require('./db');
 var pgp        = require('pg-promise')();
 var bodyParser = require('body-parser');
 var jwt        = require('jsonwebtoken');
 // secretKey to sign jwt token
 var secretKey  = 'khuljasimsim';
-var cn = {
-    host: 'localhost',
-    port: 5432,
-    database: 'kulcare_search',
-    user: 'sarbjeetsingh',
-    password: ''
-};
+
+// get connection variable from your connection file db.js
+// create file db.js and add the below code with your credentials in it
+
+// module.exports.cn = {
+//   host: 'localhost',
+//   port: 5432,
+//   database: 'db_name',
+//   user: 'username',
+//   password: 'password'
+// };
+
+var cn = connection.cn;
 var db = pgp(cn);
 
 // we need bodyParser to get params from post request
@@ -47,7 +54,7 @@ app.get('/',function(req,res){
 })
 
 app.get('/users',authenticate,function(req,res){
-  db.any("select * from users  order by id limit 10")
+  db.any("select * from dummy_users  order by id limit 10")
     .then(data => {
         // success;
         res.json(data);
@@ -58,7 +65,7 @@ app.get('/users',authenticate,function(req,res){
 })
 
 app.get('/users/:id',authenticate,function(req,res){
-  db.any("select * from users where id=$1", [req.params.id])
+  db.any("select * from dummy_users where id=$1", [req.params.id])
     .then(data => {
         // success;
         res.json(data);
